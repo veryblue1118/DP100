@@ -46,10 +46,13 @@ RUN apt-get update \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME\
     && chmod 0440 /etc/sudoers.d/$USERNAME \
     #
+    # Install Azure CLI with apt - see https://docs.microsoft.com/ko-kr/cli/azure/install-azure-cli-apt
+    && curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash \
     # Clean up
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
 
+RUN /opt/conda/bin/conda install jupyterlab -y --quiet
 # Switch back to dialog for any ad-hoc use of apt-get
 ENV DEBIAN_FRONTEND=dialog
